@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="QuemSouEuApp.Views.ClassFaceMarkingPage"
+             Title="Marcar Rostos">
+
+    <Grid RowDefinitions="320,Auto,*,Auto"
+          Padding="12"
+          RowSpacing="12">
+
+        <!-- 1) FOTO + OVERLAY -->
+        <Grid Grid.Row="0">
+            <Image x:Name="PhotoImg"
+                   Aspect="AspectFit"
+                   BackgroundColor="Black" />
+
+            <GraphicsView x:Name="Overlay"
+                          BackgroundColor="Transparent" />
+        </Grid>
+
+        <!-- 2) FORM: NOME + BOTÃO -->
+        <Grid Grid.Row="1"
+              ColumnDefinitions="*,140"
+              ColumnSpacing="10">
+
+            <Frame Padding="10"
+                   CornerRadius="12"
+                   BorderColor="#E6E6E6"
+                   BackgroundColor="White"
+                   HasShadow="False">
+
+                <Entry x:Name="NameEntry"
+                       Placeholder="Nome do aluno"
+                       ClearButtonVisibility="WhileEditing"
+                       FontSize="16" />
+            </Frame>
+
+            <Button Grid.Column="1"
+                    Text="Adicionar"
+                    HeightRequest="48"
+                    CornerRadius="12"
+                    Clicked="OnAddClicked" />
+        </Grid>
+
+        <!-- 3) LISTA -->
+        <Frame Grid.Row="2"
+               Padding="0"
+               CornerRadius="14"
+               BorderColor="#E6E6E6"
+               BackgroundColor="White"
+               HasShadow="False">
+
+            <CollectionView x:Name="StudentsList"
+                            SelectionMode="None">
+                <CollectionView.EmptyView>
+                    <Grid Padding="18">
+                        <Label Text="Adicione um aluno: digite o nome, marque o rosto e clique em Adicionar."
+                               TextColor="#7B7B7B"
+                               FontSize="14" />
+                    </Grid>
+                </CollectionView.EmptyView>
+
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Grid Padding="10"
+                              ColumnDefinitions="54,*,Auto"
+                              ColumnSpacing="12">
+
+                            <Frame Padding="0"
+                                   CornerRadius="27"
+                                   HeightRequest="44"
+                                   WidthRequest="44"
+                                   IsClippedToBounds="True"
+                                   HasShadow="False"
+                                   BorderColor="#E6E6E6">
+                                <Image Source="{Binding FacePhotoPath}" Aspect="AspectFill"/>
+                            </Frame>
+
+                            <Label Grid.Column="1"
+                                   Text="{Binding Name}"
+                                   VerticalOptions="Center"
+                                   FontSize="16"/>
+
+                            <Button Grid.Column="2"
+                                    Text="✕"
+                                    WidthRequest="44"
+                                    HeightRequest="44"
+                                    CornerRadius="12"
+                                    Clicked="OnRemoveClicked"
+                                    CommandParameter="{Binding Id}" />
+                        </Grid>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </Frame>
+
+        <!-- 4) FINALIZAR -->
+        <Button Grid.Row="3"
+                Text="Finalizar"
+                HeightRequest="52"
+                CornerRadius="14"
+                Clicked="OnFinishClicked"/>
+    </Grid>
+</ContentPage>

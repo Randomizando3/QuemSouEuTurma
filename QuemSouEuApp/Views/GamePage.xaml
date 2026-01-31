@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="QuemSouEuApp.Views.GamePage"
+             Title="Cara a Cara">
+
+    <Grid RowDefinitions="Auto,Auto,*,Auto,Auto"
+          Padding="12"
+          RowSpacing="10">
+
+        <!-- Cabeçalho -->
+        <Grid RowDefinitions="Auto,Auto" RowSpacing="6">
+            <Label x:Name="StatusLabel"
+                   Text="Carregando turma..."
+                   FontSize="16" />
+            <Label x:Name="HintLabel"
+                   Text="Dica: peça para a turma descrever o aluno secreto."
+                   TextColor="#7B7B7B"
+                   FontSize="13"/>
+        </Grid>
+
+        <!-- Botões professor -->
+        <Grid Grid.Row="1" ColumnDefinitions="*,*" ColumnSpacing="10">
+            <Button Text="Copiar segredo"
+                    Clicked="OnCopySecretClicked"
+                    HeightRequest="48"
+                    CornerRadius="14"/>
+            <Button Grid.Column="1"
+                    Text="Novo sorteio"
+                    Clicked="OnNewSecretClicked"
+                    HeightRequest="48"
+                    CornerRadius="14"/>
+        </Grid>
+
+        <!-- Grid de rostos -->
+        <CollectionView Grid.Row="2"
+                        x:Name="FacesGrid"
+                        SelectionMode="None">
+            <CollectionView.ItemsLayout>
+                <GridItemsLayout Orientation="Vertical" Span="4" />
+            </CollectionView.ItemsLayout>
+
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Grid Padding="6">
+
+                        <Frame CornerRadius="16"
+                               BorderColor="#E6E6E6"
+                               HasShadow="False"
+                               Padding="0"
+                               IsClippedToBounds="True">
+                            <Grid>
+
+                                <!-- Foto -->
+                                <Image Source="{Binding FacePhotoPath}"
+                                       Aspect="AspectFill"
+                                       HeightRequest="88"
+                                       WidthRequest="88" />
+
+                                <!-- Overlay de oculto -->
+                                <Grid BackgroundColor="#CC000000"
+                                      IsVisible="{Binding IsHidden}">
+                                    <Label Text="OCULTO"
+                                           TextColor="White"
+                                           FontAttributes="Bold"
+                                           HorizontalOptions="Center"
+                                           VerticalOptions="Center"
+                                           FontSize="14"/>
+                                </Grid>
+
+                            </Grid>
+                        </Frame>
+
+                        <!-- Tap -->
+                        <Grid.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="OnTileTapped" />
+                        </Grid.GestureRecognizers>
+
+                    </Grid>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+        <!-- Palpite -->
+        <Grid Grid.Row="3" ColumnDefinitions="*,140" ColumnSpacing="10">
+            <Entry x:Name="GuessEntry" Placeholder="Quem é?"
+                   ClearButtonVisibility="WhileEditing"
+                   FontSize="16"/>
+            <Button Grid.Column="1"
+                    Text="Confirmar"
+                    Clicked="OnGuessClicked"
+                    HeightRequest="48"
+                    CornerRadius="14"/>
+        </Grid>
+
+        <!-- Feedback -->
+        <Label Grid.Row="4"
+               x:Name="FeedbackLabel"
+               Text=""
+               FontSize="18"
+               HorizontalOptions="Center"
+               TextColor="#2B2B2B"/>
+    </Grid>
+</ContentPage>

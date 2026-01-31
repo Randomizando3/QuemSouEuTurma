@@ -1,0 +1,102 @@
+# ===============================
+# .NET / Visual Studio
+# ===============================
+bin/
+obj/
+[Bb]uild/
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+arm/
+arm64/
+
+# Visual Studio
+.vs/
+*.user
+*.rsuser
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Rider
+.idea/
+
+# VS Code
+.vscode/
+
+# ===============================
+# .NET MAUI / Xamarin
+# ===============================
+**/Resources/**/bin/
+**/Resources/**/obj/
+
+# Android
+**/Platforms/Android/bin/
+**/Platforms/Android/obj/
+*.apk
+*.aab
+*.keystore
+*.jks
+
+# iOS / MacCatalyst
+**/Platforms/iOS/bin/
+**/Platforms/iOS/obj/
+**/Platforms/MacCatalyst/bin/
+**/Platforms/MacCatalyst/obj/
+*.app
+*.ipa
+*.dSYM
+
+# Windows
+**/Platforms/Windows/bin/
+**/Platforms/Windows/obj/
+
+# ===============================
+# NuGet
+# ===============================
+packages/
+*.nupkg
+*.snupkg
+.nuget/
+.nuget/packages/
+
+# ===============================
+# Logs / temporários
+# ===============================
+*.log
+*.tmp
+*.bak
+*.cache
+
+# ===============================
+# Arquivos gerados em runtime (IMPORTANTE)
+# ===============================
+# Dados do app: fotos da turma, recortes de rosto, JSON, estado atual
+**/AppData/**
+**/Data/**
+students.json
+class_current.txt
+face_*.png
+class_*.jpg
+capture*.jpg
+
+# ===============================
+# Skia / imagens temporárias
+# ===============================
+*.png~
+*.jpg~
+
+# ===============================
+# Sistema operacional
+# ===============================
+Thumbs.db
+Desktop.ini
+.DS_Store
+
+# ===============================
+# Backup / cópias acidentais
+# ===============================
+*.old
+*.orig
+*.backup
