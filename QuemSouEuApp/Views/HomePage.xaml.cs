@@ -9,7 +9,7 @@ public partial class HomePage : ContentPage
         InitializeComponent();
     }
 
-    private async void OnCaptureClicked(object sender, EventArgs e)
+    private async void OnClassesTapped(object sender, EventArgs e)
     {
         // Se já existe turma atual, abre o resumo
         if (await ClassStateService.HasCurrentClassAsync())
@@ -23,8 +23,13 @@ public partial class HomePage : ContentPage
         await Shell.Current.GoToAsync("capture");
     }
 
-    private async void OnGameClicked(object sender, EventArgs e)
+    private async void OnWhoAmITapped(object sender, EventArgs e)
     {
         await Shell.Current.GoToAsync("game");
+    }
+
+    private async void OnMemoryTapped(object sender, EventArgs e)
+    {
+        await Shell.Current.GoToAsync("memory");
     }
 }

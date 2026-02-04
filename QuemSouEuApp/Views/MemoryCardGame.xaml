@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="QuemSouEuApp.Views.MemoryCardGame"
+             BackgroundColor="White"
+             Shell.NavBarIsVisible="False">
+
+    <Grid RowDefinitions="Auto,*,Auto"
+          Padding="24"
+          RowSpacing="14">
+
+        <!-- TOP -->
+        <Grid Grid.Row="0" ColumnDefinitions="Auto,*,Auto" ColumnSpacing="12" VerticalOptions="Center">
+            <Button Text="Voltar"
+                    BackgroundColor="Red"
+                    TextColor="White"
+                    CornerRadius="10"
+                    HeightRequest="50"
+                    Padding="16,0"
+                    Clicked="OnBackClicked"/>
+
+            <Image Grid.Column="1"
+                   Source="logomemoria.png"
+                   HeightRequest="96"
+                   Aspect="AspectFit"
+                   HorizontalOptions="Center"/>
+
+            <Button Grid.Column="2"
+                    Text="Novo"
+                    BackgroundColor="Red"
+                    TextColor="White"
+                    CornerRadius="10"
+                    HeightRequest="50"
+                    Padding="16,0"
+                    Clicked="OnRestartClicked"/>
+        </Grid>
+
+        <!-- GRID CARTAS -->
+        <CollectionView Grid.Row="1"
+                        x:Name="CardsGrid"
+                        SelectionMode="None">
+
+            <CollectionView.ItemsLayout>
+                <!-- 10 colunas como seu estilo atual -->
+                <GridItemsLayout Orientation="Vertical" Span="10"/>
+            </CollectionView.ItemsLayout>
+
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Grid Padding="8" Opacity="{Binding CardOpacity}">
+
+                        <Frame CornerRadius="10"
+                               HasShadow="False"
+                               Padding="0"
+                               IsClippedToBounds="True"
+                               BackgroundColor="#F2F2F2"
+                               WidthRequest="120"
+                               HeightRequest="120">
+
+                            <Grid WidthRequest="120" HeightRequest="120">
+
+                                <!-- Placeholder invisível (fix de medida) -->
+                                <BoxView WidthRequest="120"
+                                         HeightRequest="120"
+                                         Opacity="0"
+                                         InputTransparent="True"/>
+
+                                <!-- FACE -->
+                                <Image Source="{Binding FacePhotoPath}"
+                                       Aspect="AspectFill"
+                                       WidthRequest="120"
+                                       HeightRequest="120"
+                                       IsVisible="{Binding IsFaceVisible}"
+                                       InputTransparent="True"/>
+
+                                <!-- BACK -->
+                                <Grid IsVisible="{Binding IsBackVisible}"
+                                      WidthRequest="120"
+                                      HeightRequest="120"
+                                      InputTransparent="True">
+                                    <Image Source="u.png"
+                                           HeightRequest="64"
+                                           WidthRequest="64"
+                                           HorizontalOptions="Center"
+                                           VerticalOptions="Center"
+                                           Aspect="AspectFit"
+                                           Opacity="0.90"/>
+                                </Grid>
+
+                            </Grid>
+                        </Frame>
+
+                        <Grid.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="OnCardTapped"/>
+                        </Grid.GestureRecognizers>
+
+                    </Grid>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+        <!-- TOAST -->
+        <Frame Grid.Row="2"
+               x:Name="Toast"
+               IsVisible="False"
+               Opacity="0"
+               BackgroundColor="#CC000000"
+               CornerRadius="14"
+               Padding="12"
+               HorizontalOptions="Center">
+            <Label x:Name="ToastLabel"
+                   Text=""
+                   TextColor="White"
+                   FontSize="18"
+                   HorizontalTextAlignment="Center"/>
+        </Frame>
+
+        <!-- CONFIG OVERLAY -->
+        <Grid x:Name="ConfigOverlay"
+              IsVisible="True"
+              BackgroundColor="#AA000000"
+              InputTransparent="False">
+
+            <Frame Padding="18"
+                   CornerRadius="20"
+                   BackgroundColor="White"
+                   HasShadow="False"
+                   HorizontalOptions="Center"
+                   VerticalOptions="Center"
+                   WidthRequest="320">
+
+                <VerticalStackLayout Spacing="14">
+
+                    <Label Text="Configurar jogo"
+                           FontSize="20"
+                           FontAttributes="Bold"
+                           HorizontalOptions="Center"/>
+
+                    <Label Text="Quantos alunos (pares)?"
+                           FontSize="14"
+                           TextColor="#444"/>
+
+                    <Label x:Name="ConfigPairsLabel"
+                           Text="2"
+                           FontSize="18"
+                           FontAttributes="Bold"
+                           HorizontalOptions="Center"/>
+
+                    <Slider x:Name="ConfigPairsSlider"
+                            Minimum="2"
+                            Maximum="10"
+                            Value="2"
+                            ValueChanged="OnConfigPairsChanged"/>
+
+                    <Button Text="Gerar jogo"
+                            BackgroundColor="Red"
+                            TextColor="White"
+                            CornerRadius="14"
+                            HeightRequest="52"
+                            Clicked="OnGenerateGameClicked"/>
+
+                </VerticalStackLayout>
+            </Frame>
+        </Grid>
+
+    </Grid>
+</ContentPage>

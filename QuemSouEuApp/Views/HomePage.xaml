@@ -2,10 +2,135 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="QuemSouEuApp.Views.HomePage"
-             Title="Quem Sou Eu?">
+             BackgroundColor="White"
+             Shell.NavBarIsVisible="False">
 
-    <VerticalStackLayout Padding="24" Spacing="16">
-        <Button Text="📸 Foto da Turma" Clicked="OnCaptureClicked" />
-        <Button Text="🎮 Jogar" Clicked="OnGameClicked" />
-    </VerticalStackLayout>
+    <Grid RowDefinitions="Auto,*"
+          Padding="24"
+          RowSpacing="24">
+
+        <!-- TOP -->
+        <Grid RowDefinitions="Auto,Auto"
+              RowSpacing="10"
+              HorizontalOptions="Center">
+
+            <Image Source="jogoscomacamera.png"
+                   HeightRequest="140"
+                   Aspect="AspectFit"
+                   HorizontalOptions="Center"/>
+
+            <Label Grid.Row="1"
+                   Text="Escolha um modo de jogo"
+                   FontSize="18"
+                   TextColor="#444"
+                   HorizontalOptions="Center"/>
+        </Grid>
+
+        <!-- MENU CENTRAL (1/3 da tela) -->
+        <Grid Grid.Row="1"
+              ColumnDefinitions="*,3*,*"
+              VerticalOptions="Center">
+
+            <!-- COLUNA CENTRAL -->
+            <VerticalStackLayout Grid.Column="1"
+                                 Spacing="16"
+                                 HorizontalOptions="Fill">
+
+                <!-- TURMAS -->
+                <Frame CornerRadius="18"
+                       Padding="16"
+                       BackgroundColor="#F6F7FB"
+                       HasShadow="False"
+                       BorderColor="#E6E6E6">
+
+                    <Grid ColumnDefinitions="Auto,*"
+                          ColumnSpacing="14"
+                          VerticalOptions="Center">
+
+                        <Label Text="📚"
+                               FontSize="28"
+                               VerticalOptions="Center"/>
+
+                        <VerticalStackLayout Grid.Column="1" Spacing="2">
+                            <Label Text="Turmas"
+                                   FontSize="20"
+                                   FontAttributes="Bold"
+                                   TextColor="#111"/>
+                            <Label Text="Cadastrar / ver alunos"
+                                   FontSize="13"
+                                   TextColor="#6B7280"/>
+                        </VerticalStackLayout>
+
+                        <Grid.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="OnClassesTapped"/>
+                        </Grid.GestureRecognizers>
+                    </Grid>
+                </Frame>
+
+                <!-- QUEM SOU EU -->
+                <Frame CornerRadius="18"
+                       Padding="16"
+                       BackgroundColor="#F6F7FB"
+                       HasShadow="False"
+                       BorderColor="#E6E6E6">
+
+                    <Grid ColumnDefinitions="Auto,*"
+                          ColumnSpacing="14"
+                          VerticalOptions="Center">
+
+                        <Label Text="🕵️"
+                               FontSize="28"
+                               VerticalOptions="Center"/>
+
+                        <VerticalStackLayout Grid.Column="1" Spacing="2">
+                            <Label Text="Quem sou eu"
+                                   FontSize="20"
+                                   FontAttributes="Bold"
+                                   TextColor="#111"/>
+                            <Label Text="Cara-a-cara com segredo"
+                                   FontSize="13"
+                                   TextColor="#6B7280"/>
+                        </VerticalStackLayout>
+
+                        <Grid.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="OnWhoAmITapped"/>
+                        </Grid.GestureRecognizers>
+                    </Grid>
+                </Frame>
+
+                <!-- JOGO DA MEMÓRIA -->
+                <Frame CornerRadius="18"
+                       Padding="16"
+                       BackgroundColor="#F6F7FB"
+                       HasShadow="False"
+                       BorderColor="#E6E6E6">
+
+                    <Grid ColumnDefinitions="Auto,*"
+                          ColumnSpacing="14"
+                          VerticalOptions="Center">
+
+                        <Label Text="🧠"
+                               FontSize="28"
+                               VerticalOptions="Center"/>
+
+                        <VerticalStackLayout Grid.Column="1" Spacing="2">
+                            <Label Text="Jogo da memória"
+                                   FontSize="20"
+                                   FontAttributes="Bold"
+                                   TextColor="#111"/>
+                            <Label Text="Encontre os pares"
+                                   FontSize="13"
+                                   TextColor="#6B7280"/>
+                        </VerticalStackLayout>
+
+                        <Grid.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="OnMemoryTapped"/>
+                        </Grid.GestureRecognizers>
+                    </Grid>
+                </Frame>
+
+            </VerticalStackLayout>
+        </Grid>
+
+    </Grid>
 </ContentPage>

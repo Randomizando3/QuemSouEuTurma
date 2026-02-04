@@ -14,6 +14,8 @@ public partial class AppShell : Shell
         Routing.RegisterRoute("classfacemark", typeof(ClassFaceMarkingPage));
         Routing.RegisterRoute("classsummary", typeof(ClassSummaryPage));
         Routing.RegisterRoute("singlefacemarking", typeof(SingleFaceMarkingPage));
+        Routing.RegisterRoute("memory", typeof(QuemSouEuApp.Views.MemoryCardGame));
+
 
     }
 }
