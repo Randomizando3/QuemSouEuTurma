@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="QuemSouEuApp.Views.SingleFaceMarkingPage"
+             BackgroundColor="Black"
+             Shell.NavBarIsVisible="False">
+
+    <Grid RowDefinitions="*,Auto" Padding="12" RowSpacing="10">
+
+        <!-- Foto + overlay de marcação -->
+        <Grid>
+            <Image x:Name="PhotoImg" Aspect="AspectFit" />
+
+            <GraphicsView x:Name="Overlay"
+                          HorizontalOptions="Fill"
+                          VerticalOptions="Fill" />
+        </Grid>
+
+        <!-- Barra inferior -->
+        <Frame Grid.Row="1"
+               BackgroundColor="#111111"
+               CornerRadius="18"
+               HasShadow="False"
+               Padding="12">
+
+            <Grid ColumnDefinitions="*,140" ColumnSpacing="10">
+                <Entry x:Name="NameEntry"
+                       Placeholder="Nome do aluno"
+                       BackgroundColor="White"
+                       TextColor="#111"
+                       HeightRequest="52"
+                       FontSize="18"/>
+
+                <Button Grid.Column="1"
+                        Text="Adicionar"
+                        BackgroundColor="#7A5CFF"
+                        TextColor="White"
+                        CornerRadius="16"
+                        HeightRequest="52"
+                        Clicked="OnAddClicked"/>
+            </Grid>
+
+        </Frame>
+    </Grid>
+</ContentPage>

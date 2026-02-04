@@ -2,31 +2,123 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="QuemSouEuApp.Views.ClassSummaryPage"
-             Title="Turma Cadastrada">
+             Title="Turma"
+             BackgroundColor="#F6F7FB"
+             Shell.NavBarIsVisible="False">
 
-    <Grid RowDefinitions="Auto,Auto,*" Padding="12" RowSpacing="10">
+    <Grid RowDefinitions="Auto,Auto,*"
+          Padding="16"
+          RowSpacing="12">
 
-        <Frame Padding="6" CornerRadius="14" BackgroundColor="#111111" HasShadow="False">
-            <Image x:Name="ClassPhotoThumb" HeightRequest="160" Aspect="AspectFit" />
-        </Frame>
+        <!-- HEADER -->
+        <Grid RowDefinitions="Auto,Auto"
+              ColumnDefinitions="*,Auto"
+              RowSpacing="10">
 
-        <Button Grid.Row="1"
-                Text="Substituir turma"
-                HeightRequest="48"
-                CornerRadius="14"
-                Clicked="OnReplaceClicked"/>
+            <VerticalStackLayout Spacing="4">
+                <Label Text="Turma cadastrada"
+                       FontSize="22"
+                       FontAttributes="Bold"
+                       TextColor="#111"/>
+                <Label x:Name="CountLabel"
+                       Text="0 alunos"
+                       FontSize="14"
+                       TextColor="#6B7280"/>
+            </VerticalStackLayout>
 
-        <CollectionView Grid.Row="2" x:Name="StudentsList" SelectionMode="None">
+            <Button Grid.Column="1"
+                    Text="Voltar"
+                    BackgroundColor="#111111"
+                    TextColor="White"
+                    CornerRadius="14"
+                    HeightRequest="44"
+                    Padding="16,0"
+                    Clicked="OnBackClicked"/>
+
+            <!-- Foto da turma -->
+            <Frame Grid.Row="1"
+                   Grid.ColumnSpan="2"
+                   CornerRadius="18"
+                   Padding="10"
+                   BackgroundColor="White"
+                   HasShadow="False"
+                   BorderColor="#E6E6E6">
+                <Grid RowDefinitions="Auto,Auto" RowSpacing="10">
+                    <Image x:Name="ClassPhotoThumb"
+                           HeightRequest="190"
+                           Aspect="AspectFill"/>
+
+                    <Label Grid.Row="1"
+                           Text="Foto da turma"
+                           FontSize="13"
+                           TextColor="#6B7280"/>
+                </Grid>
+            </Frame>
+        </Grid>
+
+        <!-- AÇÕES -->
+        <Grid Grid.Row="1" ColumnDefinitions="*,*" ColumnSpacing="10">
+            <Button Text="Adicionar aluno"
+                    BackgroundColor="#7A5CFF"
+                    TextColor="White"
+                    CornerRadius="16"
+                    HeightRequest="54"
+                    Clicked="OnAddStudentClicked"/>
+
+            <Button Grid.Column="1"
+                    Text="Substituir turma"
+                    BackgroundColor="#111111"
+                    TextColor="White"
+                    CornerRadius="16"
+                    HeightRequest="54"
+                    Clicked="OnReplaceClicked"/>
+        </Grid>
+
+        <!-- LISTA -->
+        <CollectionView Grid.Row="2"
+                        x:Name="StudentsList"
+                        SelectionMode="None"
+                        BackgroundColor="Transparent">
+
             <CollectionView.ItemTemplate>
                 <DataTemplate>
-                    <Grid Padding="8" ColumnDefinitions="52,*" ColumnSpacing="12">
-                        <Frame Padding="0" CornerRadius="26" HeightRequest="44" WidthRequest="44" IsClippedToBounds="True">
-                            <Image Source="{Binding FacePhotoPath}" Aspect="AspectFill"/>
-                        </Frame>
-                        <Label Grid.Column="1" Text="{Binding Name}" VerticalOptions="Center" FontSize="16"/>
-                    </Grid>
+                    <Frame Margin="0,0,0,10"
+                           Padding="12"
+                           CornerRadius="18"
+                           BackgroundColor="White"
+                           HasShadow="False"
+                           BorderColor="#E6E6E6">
+
+                        <Grid ColumnDefinitions="52,*"
+                              ColumnSpacing="12"
+                              VerticalOptions="Center">
+
+                            <Frame Padding="0"
+                                   CornerRadius="26"
+                                   HeightRequest="52"
+                                   WidthRequest="52"
+                                   IsClippedToBounds="True"
+                                   HasShadow="False"
+                                   BackgroundColor="#F2F2F2">
+                                <Image Source="{Binding FacePhotoPath}"
+                                       Aspect="AspectFill"/>
+                            </Frame>
+
+                            <VerticalStackLayout Grid.Column="1" Spacing="2" VerticalOptions="Center">
+                                <Label Text="{Binding Name}"
+                                       FontSize="16"
+                                       FontAttributes="Bold"
+                                       TextColor="#111"/>
+                                <Label Text="Aluno cadastrado"
+                                       FontSize="12"
+                                       TextColor="#6B7280"/>
+                            </VerticalStackLayout>
+
+                        </Grid>
+                    </Frame>
                 </DataTemplate>
             </CollectionView.ItemTemplate>
+
         </CollectionView>
 
     </Grid>

@@ -1,15 +1,39 @@
 using System.Collections.ObjectModel;
 using QuemSouEuApp.Models;
 using QuemSouEuApp.Services;
+using Microsoft.Maui.Graphics;
+using Plugin.Maui.Audio;
+
 
 namespace QuemSouEuApp.Views;
 
 public partial class GamePage : ContentPage
 {
+
+    private readonly IAudioManager _audioManager = AudioManager.Current;
+    private IAudioPlayer? _successPlayer;
+
     private readonly ObservableCollection<GameStudentTile> _tiles = new();
 
     private Student? _secret;
     private string _classPhotoPath = "";
+
+    private readonly Random _rng = new();
+
+    // Paleta suave/pastel (sem vibrar)
+    private static readonly Color[] PastelPalette = new[]
+    {
+        Color.FromArgb("#F36C6C"), // vermelho suave
+        Color.FromArgb("#8BE28B"), // verde suave
+        Color.FromArgb("#B98CFF"), // roxo suave
+        Color.FromArgb("#FFB36B"), // laranja suave
+        Color.FromArgb("#6F87FF"), // azul suave
+        Color.FromArgb("#B07B6E"), // marrom suave
+        Color.FromArgb("#66D6FF"), // ciano suave
+        Color.FromArgb("#6B87A6"), // azul acinzentado
+        Color.FromArgb("#B9F0FF"), // azul bem claro
+        Color.FromArgb("#B9FF6B"), // verde-lima suave
+    };
 
     public GamePage()
     {
@@ -23,38 +47,53 @@ public partial class GamePage : ContentPage
         await LoadClassAndStartAsync();
     }
 
+
+    private async Task PlaySuccessSoundAsync()
+    {
+        try
+        {
+            // Abre o MP3 do Resources/Raw
+            var stream = await FileSystem.OpenAppPackageFileAsync("parabens.mp3");
+
+            _successPlayer?.Stop();
+            _successPlayer?.Dispose();
+
+            _successPlayer = _audioManager.CreatePlayer(stream);
+            _successPlayer.Volume = 1.0;
+            _successPlayer.Play();
+        }
+        catch
+        {
+            // Se falhar, não quebra o jogo
+        }
+    }
+
+
+
     private async Task LoadClassAndStartAsync()
     {
-        FeedbackLabel.Text = "";
-        GuessEntry.Text = "";
-
         var (classPath, students) = await GameService.LoadCurrentClassAsync();
         _classPhotoPath = classPath;
 
         if (string.IsNullOrWhiteSpace(_classPhotoPath) || students.Count == 0)
         {
-            StatusLabel.Text = "Nenhuma turma cadastrada.";
-            HintLabel.Text = "Vá em “Foto da Turma” e cadastre a turma primeiro.";
             _tiles.Clear();
             _secret = null;
+            await ShowToastAsync("Nenhuma turma cadastrada. Cadastre a turma primeiro.");
             return;
         }
 
-        StatusLabel.Text = $"Turma carregada: {students.Count} alunos";
-        HintLabel.Text = "Toque nos rostos para ocultar. Depois digite o nome e confirme.";
-
         StartNewRound(students);
+        await ShowToastAsync("Toque nas cartas para ocultar e depois tente adivinhar.");
     }
 
     private void StartNewRound(List<Student> students)
     {
-        FeedbackLabel.Text = "";
-        GuessEntry.Text = "";
-
         var shuffled = GameService.Shuffle(students);
         _secret = GameService.PickSecret(shuffled);
 
         _tiles.Clear();
+
         foreach (var s in shuffled)
         {
             _tiles.Add(new GameStudentTile
@@ -62,36 +101,79 @@ public partial class GamePage : ContentPage
                 Id = s.Id,
                 Name = s.Name,
                 FacePhotoPath = s.FacePhotoPath,
-                IsHidden = false
+                IsHidden = false,
+                BackColor = PickPastel()
             });
         }
     }
 
-    private async void OnCopySecretClicked(object sender, EventArgs e)
+    private Color PickPastel()
+        => PastelPalette[_rng.Next(PastelPalette.Length)];
+
+    // ========= TOP BUTTONS =========
+
+    private async void OnBackClicked(object sender, EventArgs e)
     {
-        if (_secret == null)
-        {
-            await DisplayAlert("Ops", "Nenhum aluno secreto sorteado.", "OK");
-            return;
-        }
-
-        await Clipboard.Default.SetTextAsync(_secret.Name);
-
-        FeedbackLabel.Text = "? Nome copiado para a área de transferência.";
+        if (Shell.Current?.Navigation?.NavigationStack?.Count > 1)
+            await Shell.Current.Navigation.PopAsync();
+        else
+            await Shell.Current.GoToAsync("///home");
     }
 
-    private async void OnNewSecretClicked(object sender, EventArgs e)
+    private async void OnNewGameClicked(object sender, EventArgs e)
     {
         var (_, students) = await GameService.LoadCurrentClassAsync();
         if (students.Count == 0)
         {
-            await DisplayAlert("Ops", "Cadastre uma turma primeiro.", "OK");
+            await ShowToastAsync("Cadastre uma turma primeiro.");
             return;
         }
 
         StartNewRound(students);
-        FeedbackLabel.Text = "?? Novo aluno secreto sorteado.";
+        await ShowToastAsync("Novo jogo iniciado.");
     }
+
+    private async void OnCopyClipboardClicked(object sender, EventArgs e)
+    {
+        if (_secret == null)
+        {
+            await ShowToastAsync("Nenhum segredo sorteado.");
+            return;
+        }
+
+        await Clipboard.Default.SetTextAsync(_secret.Name);
+        await ShowToastAsync("Nome copiado para a área de transferência.");
+    }
+
+    private async void OnShowQrClicked(object sender, EventArgs e)
+    {
+        if (_secret == null)
+        {
+            await ShowToastAsync("Nenhum segredo sorteado.");
+            return;
+        }
+
+        try
+        {
+            var pngBytes = QrCodeService.GeneratePng(_secret.Name, pixelsPerModule: 10);
+            QrImage.Source = ImageSource.FromStream(() => new MemoryStream(pngBytes));
+
+            QrOverlay.IsVisible = true;
+            await ShowToastAsync("QR Code gerado.");
+        }
+        catch
+        {
+            await ShowToastAsync("Falha ao gerar QR Code.");
+        }
+    }
+
+    private void OnCloseQrClicked(object sender, EventArgs e)
+    {
+        QrOverlay.IsVisible = false;
+        QrImage.Source = null;
+    }
+
+    // ========= CARDS =========
 
     private void OnTileTapped(object sender, TappedEventArgs e)
     {
@@ -99,39 +181,55 @@ public partial class GamePage : ContentPage
         if (ve.BindingContext is not GameStudentTile tile) return;
 
         tile.IsHidden = !tile.IsHidden;
+    }
 
-        // força refresh simples (ObservableCollection não notifica mudança interna)
-        var idx = _tiles.IndexOf(tile);
-        if (idx >= 0)
-        {
-            _tiles.RemoveAt(idx);
-            _tiles.Insert(idx, tile);
-        }
+    // ========= TOAST =========
+
+    private async Task ShowToastAsync(string message)
+    {
+        ToastLabel.Text = message;
+        Toast.IsVisible = true;
+        Toast.Opacity = 0;
+
+        await Toast.FadeTo(1, 140);
+        await Task.Delay(1400);
+        await Toast.FadeTo(0, 160);
+
+        Toast.IsVisible = false;
     }
 
     private async void OnGuessClicked(object sender, EventArgs e)
     {
         if (_secret == null)
         {
-            await DisplayAlert("Ops", "Nenhum aluno secreto sorteado.", "OK");
+            await ShowToastAsync("Nenhum aluno secreto sorteado.");
             return;
         }
 
         var guess = GuessEntry.Text?.Trim() ?? "";
+
         if (string.IsNullOrWhiteSpace(guess))
         {
-            await DisplayAlert("Ops", "Digite o nome do aluno.", "OK");
+            await ShowToastAsync("Digite o nome do aluno.");
             return;
         }
 
         if (guess.Equals(_secret.Name, StringComparison.OrdinalIgnoreCase))
         {
-            FeedbackLabel.Text = "?? Parabéns!!! Você acertou!";
-            await DisplayAlert("Parabéns!!!", $"Era: {_secret.Name}", "OK");
+            await PlaySuccessSoundAsync(); // ? AQUI
+
+            await ShowToastAsync($"Parabéns! Você acertou: {_secret.Name}");
+
+            var (_, students) = await GameService.LoadCurrentClassAsync();
+            StartNewRound(students);
+
+            GuessEntry.Text = "";
         }
+
         else
         {
-            FeedbackLabel.Text = "?? Quase! Tenta de novo.";
+            await ShowToastAsync("Não foi dessa vez. Tente novamente.");
         }
     }
+
 }

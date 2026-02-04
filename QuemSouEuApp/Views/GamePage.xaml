@@ -2,78 +2,145 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="QuemSouEuApp.Views.GamePage"
-             Title="Cara a Cara">
+             BackgroundColor="White"
+             Title="Quem Sou Eu"
+             Shell.NavBarIsVisible="False">
 
-    <Grid RowDefinitions="Auto,Auto,*,Auto,Auto"
-          Padding="12"
-          RowSpacing="10">
+    <Grid RowDefinitions="Auto,Auto,*,Auto"
+          Padding="24"
+          RowSpacing="18">
 
-        <!-- Cabeçalho -->
-        <Grid RowDefinitions="Auto,Auto" RowSpacing="6">
-            <Label x:Name="StatusLabel"
-                   Text="Carregando turma..."
-                   FontSize="16" />
-            <Label x:Name="HintLabel"
-                   Text="Dica: peça para a turma descrever o aluno secreto."
-                   TextColor="#7B7B7B"
-                   FontSize="13"/>
+        <!-- TOP BAR: esquerda botões | centro logo | direita botões -->
+        <Grid Grid.Row="0"
+              RowDefinitions="Auto"
+              ColumnDefinitions="280,*,280"
+              ColumnSpacing="16">
+
+            <!-- ESQUERDA -->
+            <VerticalStackLayout Grid.Column="0" Spacing="10">
+                <Button Text="Voltar"
+                        BackgroundColor="Red"
+                        TextColor="White"
+                        CornerRadius="10"
+                        HeightRequest="56"
+                        FontSize="22"
+                        Clicked="OnBackClicked"/>
+
+                <Button Text="Novo jogo"
+                        BackgroundColor="Red"
+                        TextColor="White"
+                        CornerRadius="10"
+                        HeightRequest="56"
+                        FontSize="22"
+                        Clicked="OnNewGameClicked"/>
+            </VerticalStackLayout>
+
+            <!-- CENTRO LOGO -->
+            <Grid Grid.Column="1"
+                  HorizontalOptions="Center"
+                  VerticalOptions="Center">
+                <Image Source="logo.png"
+                       HeightRequest="160"
+                       Aspect="AspectFit"/>
+            </Grid>
+
+            <!-- DIREITA -->
+            <VerticalStackLayout Grid.Column="2"
+                                 Spacing="10"
+                                 HorizontalOptions="End">
+                <Button Text="Copiar QR Code"
+                        BackgroundColor="Red"
+                        TextColor="White"
+                        CornerRadius="10"
+                        HeightRequest="56"
+                        FontSize="20"
+                        Clicked="OnShowQrClicked"/>
+
+                <Button Text="Copiar ClipBoard"
+                        BackgroundColor="Red"
+                        TextColor="White"
+                        CornerRadius="10"
+                        HeightRequest="56"
+                        FontSize="20"
+                        Clicked="OnCopyClipboardClicked"/>
+            </VerticalStackLayout>
         </Grid>
 
-        <!-- Botões professor -->
-        <Grid Grid.Row="1" ColumnDefinitions="*,*" ColumnSpacing="10">
-            <Button Text="Copiar segredo"
-                    Clicked="OnCopySecretClicked"
-                    HeightRequest="48"
-                    CornerRadius="14"/>
-            <Button Grid.Column="1"
-                    Text="Novo sorteio"
-                    Clicked="OnNewSecretClicked"
-                    HeightRequest="48"
-                    CornerRadius="14"/>
+        <!-- TOAST (mensagem em retângulo sobreposto) -->
+        <Grid Grid.Row="1">
+            <Frame x:Name="Toast"
+                   IsVisible="False"
+                   Opacity="0"
+                   BackgroundColor="#CC000000"
+                   CornerRadius="14"
+                   Padding="12"
+                   HorizontalOptions="Center"
+                   VerticalOptions="Center">
+                <Label x:Name="ToastLabel"
+                       Text=""
+                       TextColor="White"
+                       FontSize="18"
+                       HorizontalOptions="Center"
+                       HorizontalTextAlignment="Center"/>
+            </Frame>
         </Grid>
 
-        <!-- Grid de rostos -->
+        <!-- GRID CARTAS -->
         <CollectionView Grid.Row="2"
                         x:Name="FacesGrid"
                         SelectionMode="None">
             <CollectionView.ItemsLayout>
-                <GridItemsLayout Orientation="Vertical" Span="4" />
+                <GridItemsLayout Orientation="Vertical" Span="10"/>
             </CollectionView.ItemsLayout>
 
             <CollectionView.ItemTemplate>
                 <DataTemplate>
-                    <Grid Padding="6">
+                    <Grid Padding="8">
 
-                        <Frame CornerRadius="16"
-                               BorderColor="#E6E6E6"
+                        <Frame CornerRadius="10"
                                HasShadow="False"
                                Padding="0"
-                               IsClippedToBounds="True">
-                            <Grid>
+                               IsClippedToBounds="True"
+                               BackgroundColor="{Binding BackColor}"
+                               WidthRequest="120"
+                               HeightRequest="120">
 
-                                <!-- Foto -->
+                            <Grid WidthRequest="120"
+                                  HeightRequest="120">
+
+                                <!-- PLACEHOLDER INVISÍVEL: mantém a medida fixa -->
+                                <BoxView WidthRequest="120"
+                                         HeightRequest="120"
+                                         Opacity="0"
+                                         InputTransparent="True"/>
+
+                                <!-- FRENTE (foto do aluno) -->
                                 <Image Source="{Binding FacePhotoPath}"
                                        Aspect="AspectFill"
-                                       HeightRequest="88"
-                                       WidthRequest="88" />
+                                       HeightRequest="120"
+                                       WidthRequest="120"
+                                       IsVisible="{Binding IsFaceVisible}"
+                                       InputTransparent="True"/>
 
-                                <!-- Overlay de oculto -->
-                                <Grid BackgroundColor="#CC000000"
-                                      IsVisible="{Binding IsHidden}">
-                                    <Label Text="OCULTO"
-                                           TextColor="White"
-                                           FontAttributes="Bold"
+                                <!-- VERSO (u.png) -->
+                                <Grid IsVisible="{Binding IsBackVisible}"
+                                      WidthRequest="120"
+                                      HeightRequest="120"
+                                      InputTransparent="True">
+                                    <Image Source="u.png"
+                                           HeightRequest="64"
+                                           WidthRequest="64"
                                            HorizontalOptions="Center"
                                            VerticalOptions="Center"
-                                           FontSize="14"/>
+                                           Aspect="AspectFit"
+                                           Opacity="0.90"/>
                                 </Grid>
 
                             </Grid>
                         </Frame>
 
-                        <!-- Tap -->
                         <Grid.GestureRecognizers>
-                            <TapGestureRecognizer Tapped="OnTileTapped" />
+                            <TapGestureRecognizer Tapped="OnTileTapped"/>
                         </Grid.GestureRecognizers>
 
                     </Grid>
@@ -81,24 +148,72 @@
             </CollectionView.ItemTemplate>
         </CollectionView>
 
-        <!-- Palpite -->
-        <Grid Grid.Row="3" ColumnDefinitions="*,140" ColumnSpacing="10">
-            <Entry x:Name="GuessEntry" Placeholder="Quem é?"
-                   ClearButtonVisibility="WhileEditing"
-                   FontSize="16"/>
-            <Button Grid.Column="1"
-                    Text="Confirmar"
-                    Clicked="OnGuessClicked"
-                    HeightRequest="48"
-                    CornerRadius="14"/>
+        <!-- CAMPO DE RESPOSTA / SUBMIT -->
+        <Frame Grid.Row="3"
+               CornerRadius="14"
+               BackgroundColor="#F2F2F2"
+               HasShadow="False"
+               Padding="12">
+
+            <Grid ColumnDefinitions="*,160"
+                  ColumnSpacing="12">
+
+                <Entry x:Name="GuessEntry"
+                       Placeholder="Quem é o aluno?"
+                       FontSize="20"
+                       BackgroundColor="White"
+                       TextColor="#222"
+                       HeightRequest="56"/>
+
+                <Button Grid.Column="1"
+                        Text="Confirmar"
+                        BackgroundColor="#06D6A0"
+                        TextColor="White"
+                        CornerRadius="10"
+                        FontSize="20"
+                        HeightRequest="56"
+                        Clicked="OnGuessClicked"/>
+            </Grid>
+        </Frame>
+
+        <!-- OVERLAY QR (popup simples) -->
+        <Grid x:Name="QrOverlay"
+              IsVisible="False"
+              BackgroundColor="#AA000000"
+              RowDefinitions="*"
+              ColumnDefinitions="*"
+              InputTransparent="False">
+
+            <Frame Padding="16"
+                   CornerRadius="18"
+                   BackgroundColor="White"
+                   HasShadow="False"
+                   HorizontalOptions="Center"
+                   VerticalOptions="Center">
+
+                <VerticalStackLayout Spacing="12"
+                                     WidthRequest="320">
+                    <Label Text="QR Code do segredo"
+                           FontSize="18"
+                           TextColor="#222"
+                           HorizontalOptions="Center"/>
+
+                    <Image x:Name="QrImage"
+                           HeightRequest="260"
+                           WidthRequest="260"
+                           Aspect="AspectFit"
+                           HorizontalOptions="Center"/>
+
+                    <Button Text="Fechar"
+                            BackgroundColor="Red"
+                            TextColor="White"
+                            CornerRadius="10"
+                            HeightRequest="50"
+                            Clicked="OnCloseQrClicked"/>
+                </VerticalStackLayout>
+
+            </Frame>
         </Grid>
 
-        <!-- Feedback -->
-        <Label Grid.Row="4"
-               x:Name="FeedbackLabel"
-               Text=""
-               FontSize="18"
-               HorizontalOptions="Center"
-               TextColor="#2B2B2B"/>
     </Grid>
 </ContentPage>

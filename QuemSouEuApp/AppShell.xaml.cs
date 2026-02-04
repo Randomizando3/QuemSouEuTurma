@@ -13,5 +13,7 @@ public partial class AppShell : Shell
         Routing.RegisterRoute("result", typeof(ResultPage));
         Routing.RegisterRoute("classfacemark", typeof(ClassFaceMarkingPage));
         Routing.RegisterRoute("classsummary", typeof(ClassSummaryPage));
+        Routing.RegisterRoute("singlefacemarking", typeof(SingleFaceMarkingPage));
+
     }
 }
