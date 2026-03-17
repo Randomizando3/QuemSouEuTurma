@@ -11,13 +11,13 @@
 - QR code, storage, and image support services
 
 ### Project structure
-- `Views`: classroom and game flows
-- `ViewModels`: presentation logic
-- `Services`: storage, QR code, image, and game services
-- `Models`: students, face regions, and game entities
+- Views: classroom and game flows
+- ViewModels: presentation logic
+- Services: storage, QR code, image, and game services
+- Models: students, face regions, and game entities
 
 ### Run locally
-1. Open `QuemSouEuApp/QuemSouEuApp.sln` in Visual Studio 2022.
+1. Open QuemSouEuApp/QuemSouEuApp.sln in Visual Studio 2022.
 2. Install the .NET MAUI workload.
 3. Restore packages and run on the target platform.
 
@@ -32,12 +32,12 @@ App em .NET MAUI para atividades em sala de aula, combinando captura de foto da 
 - Serviços de QR Code, armazenamento e imagem
 
 ### Estrutura do projeto
-- `Views`: fluxos da sala e dos jogos
-- `ViewModels`: lógica de apresentação
-- `Services`: serviços de armazenamento, QR Code, imagem e jogo
-- `Models`: alunos, regiões faciais e entidades do jogo
+- Views: fluxos da sala e dos jogos
+- ViewModels: lógica de apresentação
+- Services: serviços de armazenamento, QR Code, imagem e jogo
+- Models: alunos, regiões faciais e entidades do jogo
 
 ### Executando localmente
-1. Abra `QuemSouEuApp/QuemSouEuApp.sln` no Visual Studio 2022.
+1. Abra QuemSouEuApp/QuemSouEuApp.sln no Visual Studio 2022.
 2. Instale o workload do .NET MAUI.
 3. Restaure os pacotes e execute na plataforma desejada.
