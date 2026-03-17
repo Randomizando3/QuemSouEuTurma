@@ -1,28 +1,43 @@
 # QuemSouEuTurma
 
-Aplicativo em .NET MAUI para dinamicas em sala de aula, combinando captura de fotos, marcacao de rostos, jogos e recursos de apoio para turmas.
+## English
+QuemSouEuTurma is a .NET MAUI app for classroom activities, combining class photo capture, face marking, games, and support services for student-based interactions.
 
-## Recursos identificados
+### Features identified
+- Class photo capture
+- Single and group face marking
+- Main game and memory card mode
+- Result and class summary screens
+- QR code, storage, and image support services
 
+### Project structure
+- `Views`: classroom and game flows
+- `ViewModels`: presentation logic
+- `Services`: storage, QR code, image, and game services
+- `Models`: students, face regions, and game entities
+
+### Run locally
+1. Open `QuemSouEuApp/QuemSouEuApp.sln` in Visual Studio 2022.
+2. Install the .NET MAUI workload.
+3. Restore packages and run on the target platform.
+
+## PortuguÃªs
+QuemSouEuTurma Ã© um app em .NET MAUI para atividades em sala de aula, combinando captura de foto da turma, marcaÃ§Ã£o de rostos, jogos e serviÃ§os de apoio para interaÃ§Ãµes com alunos.
+
+### Funcionalidades identificadas
 - Captura de foto da turma
-- Marcacao de rostos individual e em grupo
-- Jogo principal e modo de cartas da memoria
-- Resultado final e resumo da turma
-- Servicos de QR Code, armazenamento e recorte de imagem
+- MarcaÃ§Ã£o individual e em grupo dos rostos
+- Jogo principal e modo de cartas da memÃ³ria
+- Telas de resultado e resumo da turma
+- ServiÃ§os de QR Code, armazenamento e imagem
 
-## Estrutura principal
+### Estrutura do projeto
+- `Views`: fluxos da sala e dos jogos
+- `ViewModels`: lÃ³gica de apresentaÃ§Ã£o
+- `Services`: serviÃ§os de armazenamento, QR Code, imagem e jogo
+- `Models`: alunos, regiÃµes faciais e entidades do jogo
 
-- `Views`: telas do fluxo do professor e dos jogos
-- `ViewModels`: logica de apresentacao
-- `Services`: persistencia, QR Code, imagem e regras do jogo
-- `Models`: alunos, regioes de rosto e cartas
-
-## Como executar
-
+### Executando localmente
 1. Abra `QuemSouEuApp/QuemSouEuApp.sln` no Visual Studio 2022.
 2. Instale o workload do .NET MAUI.
-3. Restaure os pacotes e rode na plataforma desejada.
-
-## Status
-
-README inicial criado a partir da estrutura atual do projeto.
+3. Restaure os pacotes e execute na plataforma desejada.
