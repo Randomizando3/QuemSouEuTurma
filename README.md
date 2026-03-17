@@ -1,7 +1,7 @@
 # QuemSouEuTurma
 
 ## English
-QuemSouEuTurma is a .NET MAUI app for classroom activities, combining class photo capture, face marking, games, and support services for student-based interactions.
+.NET MAUI app for classroom activities, combining class photo capture, face marking, games, and support services for student-based interactions.
 
 ### Features identified
 - Class photo capture
@@ -21,21 +21,21 @@ QuemSouEuTurma is a .NET MAUI app for classroom activities, combining class phot
 2. Install the .NET MAUI workload.
 3. Restore packages and run on the target platform.
 
-## PortuguÃªs
-QuemSouEuTurma Ã© um app em .NET MAUI para atividades em sala de aula, combinando captura de foto da turma, marcaÃ§Ã£o de rostos, jogos e serviÃ§os de apoio para interaÃ§Ãµes com alunos.
+## Português
+App em .NET MAUI para atividades em sala de aula, combinando captura de foto da turma, marcação de rostos, jogos e serviços de apoio para interações com alunos.
 
 ### Funcionalidades identificadas
 - Captura de foto da turma
-- MarcaÃ§Ã£o individual e em grupo dos rostos
-- Jogo principal e modo de cartas da memÃ³ria
+- Marcação individual e em grupo dos rostos
+- Jogo principal e modo de cartas da memória
 - Telas de resultado e resumo da turma
-- ServiÃ§os de QR Code, armazenamento e imagem
+- Serviços de QR Code, armazenamento e imagem
 
 ### Estrutura do projeto
 - `Views`: fluxos da sala e dos jogos
-- `ViewModels`: lÃ³gica de apresentaÃ§Ã£o
-- `Services`: serviÃ§os de armazenamento, QR Code, imagem e jogo
-- `Models`: alunos, regiÃµes faciais e entidades do jogo
+- `ViewModels`: lógica de apresentação
+- `Services`: serviços de armazenamento, QR Code, imagem e jogo
+- `Models`: alunos, regiões faciais e entidades do jogo
 
 ### Executando localmente
 1. Abra `QuemSouEuApp/QuemSouEuApp.sln` no Visual Studio 2022.
